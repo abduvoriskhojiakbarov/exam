@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced LMS</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-mark">A</span>
+          <div>
+            <strong>Advanced LMS</strong>
+            <small>Course platform</small>
+          </div>
+        </div>
+
+        <nav class="nav-list" aria-label="Main navigation">
+          <button class="nav-item active" data-view="dashboard" type="button">Dashboard</button>
+          <button class="nav-item" data-view="auth" type="button">Auth</button>
+          <button class="nav-item" data-view="courses" type="button">Courses</button>
+          <button class="nav-item" data-view="learning" type="button">Learning</button>
+          <button class="nav-item" data-view="assignments" type="button">Assignments</button>
+          <button class="nav-item" data-view="results" type="button">Results</button>
+          <button class="nav-item" data-view="users" type="button">Users</button>
+        </nav>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">NestJS LMS Backend Client</p>
+            <h1 id="pageTitle">Dashboard</h1>
+            <p id="roleHelp" class="role-help">Login first, then use pages allowed for your role.</p>
+          </div>
+          <div class="profile-strip">
+            <span id="userBadge">Guest</span>
+            <button id="logoutBtn" class="ghost-btn" type="button">Logout</button>
+          </div>
+        </header>
+
+        <section id="dashboardView" class="view active">
+          <div class="stats-grid">
+            <article class="stat-card">
+              <span>Courses</span>
+              <strong id="courseCount">0</strong>
+            </article>
+            <article class="stat-card">
+              <span>My courses</span>
+              <strong id="myCourseCount">0</strong>
+            </article>
+            <article class="stat-card">
+              <span>Assignments</span>
+              <strong id="assignmentCount">0</strong>
+            </article>
+            <article class="stat-card">
+              <span>Results</span>
+              <strong id="resultCount">0</strong>
+            </article>
+          </div>
+          <div class="hero-band">
+            <div>
+              <h2>Manage courses, lessons, submissions, and results from one workspace.</h2>
+              <p>Use the forms below after logging in with a matching role. Teachers create content, students enroll and submit, admins can inspect users and results.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="authView" class="view">
+          <div class="auth-layout">
+            <aside class="auth-guide">
+              <p class="eyebrow">Account Access</p>
+              <h2>Choose one action and keep the workflow simple.</h2>
+              <p>Register creates a new user. Login signs in an existing user and saves the access token for all protected LMS actions.</p>
+              <div class="role-notes">
+                <span>Teacher: create courses, modules, lessons</span>
+                <span>Student: enroll, view lessons, submit assignments</span>
+                <span>Admin: manage users, courses, results</span>
+              </div>
+            </aside>
+
+            <div class="auth-workspace">
+              <div class="auth-switch" role="tablist" aria-label="Authentication mode">
+                <button class="auth-tab active" data-auth-tab="login" type="button">Login</button>
+                <button class="auth-tab" data-auth-tab="register" type="button">Register</button>
+              </div>
+
+              <form id="loginForm" class="panel auth-card active" data-auth-panel="login">
+                <div class="panel-title">
+                  <span class="step">01</span>
+                  <div>
+                    <h2>Login</h2>
+                    <p>Use the account role needed for the page you want to test.</p>
+                  </div>
+                </div>
+                <label>Email <input name="email" type="email" value="teacher@example.com" required /></label>
+                <label>Password <input name="password" type="password" value="password123" required /></label>
+                <button class="primary-btn" type="submit">Login</button>
+              </form>
+
+              <form id="registerForm" class="panel auth-card" data-auth-panel="register">
+                <div class="panel-title">
+                  <span class="step">02</span>
+                  <div>
+                    <h2>Register</h2>
+                    <p>Create a teacher, student, or admin account.</p>
+                  </div>
+                </div>
+                <label>Name <input name="name" value="Teacher One" required /></label>
+                <label>Email <input name="email" type="email" value="teacher@example.com" required /></label>
+                <label>Password <input name="password" type="password" value="password123" required /></label>
+                <label>
+                  Role
+                  <select name="role">
+                    <option>TEACHER</option>
+                    <option>STUDENT</option>
+                    <option>ADMIN</option>
+                  </select>
+                </label>
+                <button class="primary-btn" type="submit">Create account</button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <section id="coursesView" class="view">
+          <div class="section-head">
+            <div>
+              <h2>Courses</h2>
+              <p>Create, inspect, and reuse course IDs for the next steps.</p>
+            </div>
+            <button id="loadCoursesBtn" class="ghost-btn" type="button">Refresh</button>
+          </div>
+          <form id="courseForm" class="panel compact-form">
+            <input name="title" placeholder="Course title" required />
+            <input name="category" placeholder="Category" required />
+            <input name="price" type="number" min="0" step="0.01" value="49.99" required />
+            <select name="level">
+              <option>BEGINNER</option>
+              <option selected>INTERMEDIATE</option>
+              <option>ADVANCED</option>
+            </select>
+            <input name="thumbnail" placeholder="Thumbnail URL" />
+            <textarea name="description" placeholder="Description" required>Professional backend course</textarea>
+            <button class="primary-btn" type="submit">Create course</button>
+          </form>
+          <div id="coursesList" class="item-list ordered-list"></div>
+        </section>
+
+        <section id="learningView" class="view">
+          <div class="workflow-strip">
+            <span>1. Create module</span>
+            <span>2. Create lesson</span>
+            <span>3. Enroll student</span>
+            <span>4. Load content</span>
+          </div>
+
+          <div class="two-column">
+            <form id="moduleForm" class="panel">
+              <div class="panel-title">
+                <span class="step">01</span>
+                <h2>Create module</h2>
+              </div>
+              <label>Course ID <input name="courseId" placeholder="Course UUID" required /></label>
+              <label>Title <input name="title" value="Introduction" required /></label>
+              <label>Description <textarea name="description">Start here</textarea></label>
+              <label>Order <input name="order" type="number" value="1" min="1" /></label>
+              <button class="primary-btn" type="submit">Create module</button>
+            </form>
+
+            <form id="lessonForm" class="panel">
+              <div class="panel-title">
+                <span class="step">02</span>
+                <h2>Create lesson</h2>
+              </div>
+              <label>Module ID <input name="moduleId" placeholder="Module UUID" required /></label>
+              <label>Title <input name="title" value="Lesson 1" required /></label>
+              <label>Video URL <input name="videoUrl" value="https://example.com/video.mp4" required /></label>
+              <label>Content <textarea name="content">Lesson content</textarea></label>
+              <label>Order <input name="order" type="number" value="1" min="1" /></label>
+              <button class="primary-btn" type="submit">Create lesson</button>
+            </form>
+          </div>
+
+          <div class="two-column">
+            <form id="enrollForm" class="panel">
+              <div class="panel-title">
+                <span class="step">03</span>
+                <h2>Enroll student</h2>
+              </div>
+              <label>Course ID <input name="courseId" placeholder="Course UUID" required /></label>
+              <button class="primary-btn" type="submit">Enroll</button>
+            </form>
+
+            <form id="loadLessonsForm" class="panel">
+              <div class="panel-title">
+                <span class="step">04</span>
+                <h2>View lessons</h2>
+              </div>
+              <label>Module ID <input name="moduleId" placeholder="Module UUID" required /></label>
+              <button class="primary-btn" type="submit">Load lessons</button>
+            </form>
+          </div>
+
+          <div id="learningList" class="item-list"></div>
+        </section>
+
+        <section id="assignmentsView" class="view">
+          <div class="two-column">
+            <form id="assignmentForm" class="panel">
+              <div class="panel-title">
+                <span class="step">01</span>
+                <h2>Submit assignment</h2>
+              </div>
+              <label>Module ID <input name="moduleId" placeholder="Module UUID" required /></label>
+              <label>Answer <textarea name="answer">My assignment answer</textarea></label>
+              <button class="primary-btn" type="submit">Submit</button>
+            </form>
+
+            <form id="gradeForm" class="panel">
+              <div class="panel-title">
+                <span class="step">02</span>
+                <h2>Grade assignment</h2>
+              </div>
+              <label>Assignment ID <input name="assignmentId" placeholder="Assignment UUID" required /></label>
+              <label>Score <input name="score" type="number" value="95" min="0" max="100" /></label>
+              <label>Feedback <textarea name="feedback">Excellent work</textarea></label>
+              <button class="primary-btn" type="submit">Grade</button>
+            </form>
+          </div>
+          <button id="loadAssignmentsBtn" class="ghost-btn" type="button">Load my assignments</button>
+          <div id="assignmentsList" class="item-list"></div>
+        </section>
+
+        <section id="resultsView" class="view">
+          <div class="section-head">
+            <div>
+              <h2>Results</h2>
+              <p>Students see their own results. Teachers and admins can view all results.</p>
+            </div>
+            <div class="button-row">
+              <button id="loadMyResultsBtn" class="ghost-btn" type="button">My results</button>
+              <button id="loadAllResultsBtn" class="ghost-btn" type="button">All results</button>
+            </div>
+          </div>
+          <div id="resultsList" class="item-list"></div>
+        </section>
+
+        <section id="usersView" class="view">
+          <div class="section-head">
+            <div>
+              <h2>Users</h2>
+              <p>Admin-only user overview.</p>
+            </div>
+            <button id="loadUsersBtn" class="ghost-btn" type="button">Load users</button>
+          </div>
+          <div id="usersList" class="item-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,377 @@
+╔══════════════════════════════════════════════════════════════════╗
+║          LMS FRONTEND — TO'LIQ REJASI (4 KUN)                  ║
+║          Online Learning Management System                       ║
+╚══════════════════════════════════════════════════════════════════╝
+
+TEXNOLOGIYALAR
+──────────────
+  Framework   : React 18 + TypeScript
+  Routing     : React Router v6
+  State       : Zustand (yoki Redux Toolkit)
+  API calls   : Axios + React Query (TanStack)
+  Styling     : Tailwind CSS + shadcn/ui
+  Animations  : Framer Motion
+  Forms       : React Hook Form + Zod validation
+  Charts      : Recharts
+  Icons       : Lucide React
+  Build tool  : Vite
+  HTTP Client : Axios (interceptors for JWT)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 LOYIHA STRUKTURASI
+──────────────────────
+  src/
+   ├── api/
+   │    ├── axios.ts          (base instance + interceptors)
+   │    ├── auth.api.ts
+   │    ├── courses.api.ts
+   │    ├── modules.api.ts
+   │    ├── lessons.api.ts
+   │    ├── enrollments.api.ts
+   │    ├── assignments.api.ts
+   │    └── results.api.ts
+   │
+   ├── components/
+   │    ├── ui/               (Button, Input, Modal, Badge, Card...)
+   │    ├── layout/
+   │    │    ├── Navbar.tsx
+   │    │    ├── Sidebar.tsx
+   │    │    └── Footer.tsx
+   │    ├── course/
+   │    │    ├── CourseCard.tsx
+   │    │    ├── CourseList.tsx
+   │    │    └── CourseFilter.tsx
+   │    ├── lesson/
+   │    │    ├── VideoPlayer.tsx
+   │    │    └── LessonContent.tsx
+   │    └── common/
+   │         ├── ProtectedRoute.tsx
+   │         ├── RoleGuard.tsx
+   │         ├── Pagination.tsx
+   │         └── LoadingSpinner.tsx
+   │
+   ├── pages/
+   │    ├── public/
+   │    │    ├── HomePage.tsx
+   │    │    ├── CoursesPage.tsx
+   │    │    ├── CourseDetailPage.tsx
+   │    │    ├── LoginPage.tsx
+   │    │    └── RegisterPage.tsx
+   │    │
+   │    ├── student/
+   │    │    ├── StudentDashboard.tsx
+   │    │    ├── MyCoursesPage.tsx
+   │    │    ├── LessonPage.tsx
+   │    │    ├── AssignmentPage.tsx
+   │    │    └── ResultsPage.tsx
+   │    │
+   │    ├── teacher/
+   │    │    ├── TeacherDashboard.tsx
+   │    │    ├── CreateCoursePage.tsx
+   │    │    ├── EditCoursePage.tsx
+   │    │    ├── ManageModulesPage.tsx
+   │    │    └── GradeSubmissionsPage.tsx
+   │    │
+   │    └── admin/
+   │         ├── AdminDashboard.tsx
+   │         ├── UsersPage.tsx
+   │         └── AllCoursesPage.tsx
+   │
+   ├── store/
+   │    ├── auth.store.ts
+   │    └── course.store.ts
+   │
+   ├── hooks/
+   │    ├── useAuth.ts
+   │    ├── useCourses.ts
+   │    └── useEnrollment.ts
+   │
+   ├── types/
+   │    ├── user.types.ts
+   │    ├── course.types.ts
+   │    └── assignment.types.ts
+   │
+   ├── utils/
+   │    ├── token.ts
+   │    └── formatters.ts
+   │
+   ├── router/
+   │    └── AppRouter.tsx
+   │
+   └── main.tsx
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📅 1-KUN — AUTH + LAYOUT + PUBLIC PAGES
+─────────────────────────────────────────
+
+  VAZIFALAR:
+  □ Vite + React + TypeScript setup
+  □ Tailwind CSS + Framer Motion o'rnatish
+  □ Axios instance yaratish (baseURL, interceptors)
+    - Request interceptor: Authorization: Bearer <token>
+    - Response interceptor: 401 → refresh token → retry
+  □ Zustand auth store:
+      { user, accessToken, setAuth, logout }
+  □ ProtectedRoute + RoleGuard komponentlari
+  □ AppRouter.tsx — barcha routelar
+
+  SAHIFALAR:
+  □ HomePage
+      - Hero section (animated heading)
+      - Featured courses grid
+      - Stats section (students, courses, teachers)
+      - CTA (enroll now)
+  □ LoginPage
+      - Email + password form (React Hook Form + Zod)
+      - JWT token saqlash
+      - Redirect by role after login
+  □ RegisterPage
+      - Name, email, password, role select
+      - Validation + error messages
+  □ Navbar
+      - Logo, nav links
+      - Auth state: Login/Register vs User avatar + logout
+      - Animated hamburger menu (mobile)
+
+  ANIMATIONS (Framer Motion):
+  - Page transition (fadeIn + slideUp)
+  - Hero text staggered reveal
+  - Button hover scale
+  - Form shake on error
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📅 2-KUN — COURSES + STUDENT DASHBOARD
+────────────────────────────────────────
+
+  SAHIFALAR:
+  □ CoursesPage (public)
+      - Search bar (debounced)
+      - Filter: category, level (BEGINNER / INTERMEDIATE / ADVANCED)
+      - CourseCard grid with pagination
+      - Skeleton loading state
+
+  □ CourseDetailPage (public)
+      - Course thumbnail, title, description
+      - Teacher info
+      - Module list (accordion, locked if not enrolled)
+      - Enroll button (student only)
+      - Price badge
+
+  □ StudentDashboard
+      - Welcome header (animated)
+      - Stats cards: enrolled courses, completed lessons, avg score
+      - Progress bars per course
+      - Recent activity feed
+
+  □ MyCoursesPage (student)
+      - Enrolled courses list
+      - Progress % per course
+      - "Continue learning" button → last lesson
+
+  KOMPONENTLAR:
+  □ CourseCard:
+      - Thumbnail, title, teacher, level badge
+      - Student count, price
+      - Hover: lift + shadow animation
+  □ ProgressBar (animated fill on mount)
+  □ Pagination component
+
+  ANIMATIONS:
+  - CourseCard stagger on list load
+  - Progress bar animated fill
+  - Stats counter number animation (0 → N)
+  - Skeleton shimmer loading
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📅 3-KUN — LESSONS + TEACHER PANEL
+────────────────────────────────────
+
+  SAHIFALAR:
+  □ LessonPage (student)
+      - Left sidebar: module tree + lesson list
+        (completed lessons checkmarked)
+      - Main: video player (iframe/HTML5)
+      - Below video: lesson content/text
+      - Next / Prev lesson navigation
+      - Mark as complete button
+
+  □ AssignmentPage (student)
+      - Assignment title + description
+      - Textarea for answer submission
+      - Submit button with loading state
+      - After submit: show status (PENDING / REVIEWED)
+      - If reviewed: score + teacher feedback
+
+  □ TeacherDashboard
+      - My courses list with stats
+      - Pending submissions count (badge)
+      - Quick actions: Create course, Add module
+
+  □ CreateCoursePage (teacher)
+      - Multi-step form (3 steps):
+        Step 1: Basic info (title, description, category, level, price)
+        Step 2: Thumbnail upload preview
+        Step 3: Review + submit
+      - Animated step transitions
+
+  □ ManageModulesPage (teacher)
+      - Course modules list (drag-to-reorder optional)
+      - Add module form (inline)
+      - Per module: add lesson form
+        (title, videoUrl, content, order)
+
+  □ GradeSubmissionsPage (teacher)
+      - List of pending submissions
+      - Per submission: student name, answer text
+      - Input: score + feedback textarea
+      - Submit grade button
+
+  ANIMATIONS:
+  - Sidebar accordion open/close
+  - Multi-step form slide transition
+  - Lesson complete checkmark pop animation
+  - Submission card expand on click
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📅 4-KUN — ADMIN + RESULTS + POLISH
+─────────────────────────────────────
+
+  SAHIFALAR:
+  □ ResultsPage (student)
+      - Per course: totalScore, completedLessons, completionPercent
+      - Donut chart (Recharts) — completion %
+      - Assignment scores list
+
+  □ AdminDashboard
+      - Platform stats: total users, courses, enrollments
+      - Bar chart: enrollments per course (Recharts)
+      - Line chart: new users per day
+
+  □ UsersPage (admin)
+      - Table: name, email, role, createdAt
+      - Search + filter by role
+      - Change role dropdown
+      - Delete user (confirm modal)
+
+  □ AllCoursesPage (admin)
+      - All courses table
+      - Toggle published/unpublished
+      - Delete course
+
+  POLISH & UX:
+  □ Toast notifications (success / error / info)
+  □ Global error boundary
+  □ 404 Not Found page (animated)
+  □ Empty state components (no courses, no results)
+  □ Responsive design (mobile breakpoints)
+  □ Dark mode toggle (optional bonus)
+  □ Loading spinner / skeleton on all data fetch
+  □ Confirm modal for delete actions
+
+  ANIMATIONS (final polish):
+  - Route page transitions (AnimatePresence)
+  - Table row stagger on load
+  - Chart animate on mount
+  - Toast slide-in from top-right
+  - 404 floating illustration
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔐 AUTH FLOW (FRONTEND)
+────────────────────────
+  1. POST /auth/login  →  { accessToken, user }
+  2. accessToken → Zustand store + localStorage
+  3. refreshToken → httpOnly cookie (backend sets it)
+  4. Axios request interceptor → add Bearer token
+  5. Axios 401 response → POST /auth/refresh → retry
+  6. Logout → POST /auth/logout + clear store
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🛡 ROUTE GUARDS
+───────────────
+  <ProtectedRoute>          — faqat login bo'lgan user
+  <RoleGuard role="STUDENT">  — faqat student
+  <RoleGuard role="TEACHER">  — faqat teacher
+  <RoleGuard role="ADMIN">    — faqat admin
+
+  Redirect logic:
+  - Not logged in → /login
+  - Wrong role → /dashboard (own dashboard)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎨 DESIGN SYSTEM
+─────────────────
+  Color palette:
+    Primary   : #6C63FF  (violet)
+    Secondary : #10B981  (emerald)
+    Dark bg   : #0F0F0F
+    Card bg   : #1A1A2E
+    Text      : #F1F5F9
+    Muted     : #94A3B8
+
+  Typography:
+    Headings  : 'Syne' (Google Fonts)
+    Body      : 'DM Sans'
+    Code/mono : 'JetBrains Mono'
+
+  Spacing scale : 4px base (Tailwind default)
+  Border radius : rounded-xl (12px) for cards
+  Shadows       : custom glow shadows for cards
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📦 DEPENDENCIES (package.json)
+────────────────────────────────
+  "react": "^18.3.0"
+  "react-dom": "^18.3.0"
+  "react-router-dom": "^6.26.0"
+  "typescript": "^5.5.0"
+  "vite": "^5.4.0"
+  "axios": "^1.7.0"
+  "@tanstack/react-query": "^5.56.0"
+  "zustand": "^4.5.0"
+  "framer-motion": "^11.3.0"
+  "react-hook-form": "^7.53.0"
+  "zod": "^3.23.0"
+  "@hookform/resolvers": "^3.9.0"
+  "recharts": "^2.12.0"
+  "lucide-react": "^0.441.0"
+  "tailwindcss": "^3.4.0"
+  "clsx": "^2.1.0"
+  "react-hot-toast": "^2.4.0"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ BONUS FEATURES (agar vaqt bo'lsa)
+──────────────────────────────────────
+  □ Dark / Light mode toggle
+  □ i18n (uz / en / ru)
+  □ PWA (manifest + service worker)
+  □ Lazy loading for pages (React.lazy + Suspense)
+  □ Virtualized list for large course lists
+  □ File upload (avatar + course thumbnail)
+  □ Real-time notifications (WebSocket / SSE)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 SAHIFALAR RO'YXATI (jami)
+──────────────────────────────
+  PUBLIC      (3) : Home, Courses, CourseDetail
+  AUTH        (2) : Login, Register
+  STUDENT     (5) : Dashboard, MyCourses, Lesson, Assignment, Results
+  TEACHER     (5) : Dashboard, CreateCourse, EditCourse, Modules, Grade
+  ADMIN       (3) : Dashboard, Users, AllCourses
+  COMMON      (1) : 404 NotFound
+  ─────────────────
+  TOTAL      19 sahifa
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🏁 OMAD! — LMS Frontend 4 kunda tayyor bo'ladi.

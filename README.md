@@ -39,6 +39,18 @@ Swagger docs:
 http://localhost:3000/docs
 ```
 
+Frontend:
+
+```bash
+npm run frontend
+```
+
+Open:
+
+```text
+http://localhost:5173
+```
+
 ## Docker
 
 ```bash
