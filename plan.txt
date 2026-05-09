@@ -1,0 +1,431 @@
+🎓 Advanced Online Kurslarni Boshqarish Tizimi (LMS Backend).  
+
+odamdak qilib ber
+
+📌 LOYIHA MAQSADI
+NestJS asosida professional arxitekturaga ega bo‘lgan Online Learning Management System (LMS) backend qismini ishlab chiqish.
+
+Tizim foydalanuvchilarga:
+- kurslarga yozilish
+- darslarni ko‘rish
+- topshiriqlarni bajarish
+- natijalarni kuzatish
+
+imkoniyatini beradi.
+
+Tizimda 3 xil role mavjud:
+- admin
+- teacher
+- student
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🕒 MUDDAT
+4 kun
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🛠 TEXNOLOGIYALAR
+
+Backend:
+- NestJS
+- TypeScript
+
+Database:
+- PostgreSQL
+
+ORM:
+- TypeORM
+
+Authentication:
+- JWT
+- Access Token
+- Refresh Token
+
+DevOps:
+- Docker
+- Docker Compose
+
+Version Control:
+- GitHub + Git
+
+API Testing:
+- Postman
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+👥 ROLE VA VAKOLATLAR
+
+ADMIN:
+- barcha foydalanuvchilarni boshqaradi
+- barcha kurslarni boshqaradi
+
+TEACHER:
+- kurs yaratadi
+- modul yaratadi
+- lesson yaratadi
+- assignment tekshiradi
+
+STUDENT:
+- kurslarga yoziladi
+- darslarni ko‘radi
+- topshiriq yuboradi
+- natijalarni ko‘radi
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📅 1-KUN — AUTHENTICATION & USER MANAGEMENT
+
+📌 Auth Module
+
+Routelar:
+
+POST /auth/register
+POST /auth/login
+POST /auth/refresh
+POST /auth/logout
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔐 JWT TALABLARI
+
+- Access token response’da qaytsin
+- Refresh token cookie’da saqlansin
+- Password bcrypt bilan hash qilinsin
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+👤 USER ENTITY
+
+id
+name
+email
+password
+role
+avatar
+bio
+createdAt
+updatedAt
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎭 ROLE ENUM
+
+ADMIN
+TEACHER
+STUDENT
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📅 2-KUN — COURSES MANAGEMENT
+
+📚 Courses Module
+
+📌 Functional Talablar
+
+STUDENT:
+- kurslarni ko‘radi
+- kursga yoziladi
+
+TEACHER:
+- o‘z kurslarini yaratadi
+- tahrirlaydi
+- o‘chiradi
+
+ADMIN:
+- barcha kurslarni boshqaradi
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 COURSE ROUTELAR
+
+GET /courses
+GET /courses/:id
+POST /courses
+PUT /courses/:id
+DELETE /courses/:id
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 COURSE ENTITY
+
+id
+title
+description
+price
+thumbnail
+category
+level
+teacherId
+createdAt
+updatedAt
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 LEVEL ENUM
+
+BEGINNER
+INTERMEDIATE
+ADVANCED
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📅 3-KUN — MODULES, LESSONS & ENROLLMENT
+
+📦 Modules Module
+
+ROUTELAR:
+
+GET /courses/:courseId/modules
+POST /courses/:courseId/modules
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎥 Lessons Module
+
+ROUTELAR:
+
+GET /modules/:moduleId/lessons
+POST /modules/:moduleId/lessons
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 LESSON ENTITY
+
+id
+title
+videoUrl
+content
+moduleId
+order
+createdAt
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📝 Enrollment Module
+
+Student kursga yozilgandan keyingina:
+- module
+- lesson
+- assignment
+
+larni ko‘ra olishi kerak.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 ENROLLMENT ROUTELAR
+
+POST /courses/:id/enroll
+GET /my-courses
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 ENROLLMENT ENTITY
+
+id
+studentId
+courseId
+enrolledAt
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📅 4-KUN — ASSIGNMENTS & RESULTS
+
+📄 Assignments Module
+
+FUNCTIONAL:
+Student topshiriq yuboradi.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 ASSIGNMENT ROUTELAR
+
+POST /modules/:moduleId/assignments
+GET /assignments/my
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 ASSIGNMENT ENTITY
+
+id
+studentId
+moduleId
+answer
+score
+feedback
+status
+submittedAt
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 Results Module
+
+📌 ROUTELAR
+
+GET /results
+GET /results/me
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 RESULT ENTITY
+
+id
+studentId
+courseId
+totalScore
+completedLessons
+completionPercent
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔗 RELATIONSHIPS
+
+User
+ ├── Teacher → Courses
+ ├── Student → Enrollments
+ └── Student → Assignments
+
+Course
+ ├── Modules
+ ├── Enrollments
+ └── Results
+
+Module
+ ├── Lessons
+ └── Assignments
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🧱 ARXITEKTURA TALABLARI
+
+Har bir modul:
+- controller
+- service
+- dto
+- entity
+- guards
+- decorators
+
+bilan professional structure’da yozilishi kerak.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔒 SECURITY TALABLARI
+
+Guards:
+- JwtAuthGuard
+- RolesGuard
+
+Decorators:
+- @Roles()
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🐳 DOCKER TALABLARI
+
+Project:
+- NestJS
+- PostgreSQL
+
+docker-compose orqali ishlashi kerak.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📦 DOCKER COMPOSE SERVICELARI
+
+- app
+- postgres
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🌿 GIT TALABLARI
+
+Branchlar:
+- main
+- develop
+- feature/auth
+- feature/courses
+- feature/modules
+- feature/assignments
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ COMMIT NAMING
+
+feat(auth): add jwt authentication
+feat(courses): create courses module
+fix(auth): refresh token bug fixed
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🧪 POSTMAN TALABLARI
+
+- barcha routelar test qilinsin
+- collection export qilinsin
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 BONUS FEATURES
+
+- Swagger Documentation
+- Pagination & Search
+- File Upload
+- Redis Cache
+- Deployment (Railway/Render/VPS)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 TOPSHIRILADIGAN NARSALAR
+
+✅ GitHub repository
+✅ Postman collection
+✅ .env.example
+✅ README.md
+✅ docker-compose.yml
+✅ Deploy link (bonus)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 BAHOLASH MEZONI
+
+Funksiyalar ishlashi — 40 ball
+NestJS Architecture — 25 ball
+Docker ishlashi — 20 ball
+Git workflow — 10 ball
+Postman testlari — 5 ball
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🏆 JAMI: 100 BALL
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 QO‘SHIMCHA PROFESSIONAL TALABLAR
+
+- class-validator ishlatilsin
+- global exception filter
+- standart API response
+- logging middleware
+- @nestjs/config
+- .env ishlatilsin
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 TAVSIYA ETILGAN STRUCTURE
+
+src/
+ ├── auth/
+ ├── users/
+ ├── courses/
+ ├── modules/
+ ├── lessons/
+ ├── enrollments/
+ ├── assignments/
+ ├── results/
+ ├── common/
+ ├── config/
+ └── database/
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🏁 OMAD!
