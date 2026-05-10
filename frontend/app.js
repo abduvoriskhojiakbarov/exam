@@ -7,40 +7,40 @@ const state = {
 
 const permissions = {
   ADMIN: {
-    dashboard: 'Admin can manage users, courses, modules, lessons, assignments, and all results.',
-    auth: 'You are logged in as admin. Switch accounts here when testing another role.',
-    courses: 'Admin can create, update, and delete all courses.',
-    learning: 'Admin can create modules and lessons for any course.',
-    assignments: 'Admin can grade assignments.',
-    results: 'Admin can load all results.',
-    users: 'Admin can load and manage users.'
+    dashboard: 'Admin foydalanuvchilar, kurslar, modullar, darslar, vazifalar va barcha natijalarni boshqara oladi.',
+    auth: "Siz admin sifatida tizimga kirgansiz. Boshqa rol sinashda bu yerda hisob almashtiring.",
+    courses: "Admin barcha kurslarni yaratishi, yangilashi va o'chirishi mumkin.",
+    learning: "Admin istalgan kurs uchun modul va darslar yarata oladi.",
+    assignments: "Admin vazifalarni baholashi mumkin.",
+    results: "Admin barcha natijalarni yuklay oladi.",
+    users: "Admin foydalanuvchilarni yuklab boshqara oladi."
   },
   TEACHER: {
-    dashboard: 'Teacher can create own courses, modules, lessons, and grade assignments.',
-    auth: 'You are logged in as teacher. Switch accounts here when testing student-only actions.',
-    courses: 'Teacher can create courses and manage only own courses.',
-    learning: 'Teacher can create modules and lessons for own courses.',
-    assignments: 'Teacher can grade assignments for own courses.',
-    results: 'Teacher can load all results.',
-    users: 'Only admin can load users.'
+    dashboard: "O'qituvchi o'z kurslarini, modul va darslarni yarata oladi va vazifalarni baholashi mumkin.",
+    auth: "Siz o'qituvchi sifatida tizimga kirgansiz. Faqat talaba amallari uchun hisob almashtiring.",
+    courses: "O'qituvchi kurs yaratishi va faqat o'z kurslarini boshqara oladi.",
+    learning: "O'qituvchi o'z kurslari uchun modul va darslar yarata oladi.",
+    assignments: "O'qituvchi o'z kurslari uchun vazifalarni baholashi mumkin.",
+    results: "O'qituvchi barcha natijalarni yuklay oladi.",
+    users: "Faqat admin foydalanuvchilarni yuklay oladi."
   },
   STUDENT: {
-    dashboard: 'Student can enroll in courses, view lessons, submit assignments, and view own results.',
-    auth: 'You are logged in as student. Switch accounts here when testing teacher/admin actions.',
-    courses: 'Student can view courses, but cannot create courses.',
-    learning: 'Student must enroll before viewing modules or lessons.',
-    assignments: 'Student can submit and view own assignments.',
-    results: 'Student can load only own results.',
-    users: 'Only admin can load users.'
+    dashboard: "Talaba kurslarga yozilishi, darslarni ko'rishi, vazifalar topshirishi va o'z natijalarini ko'rishi mumkin.",
+    auth: "Siz talaba sifatida tizimga kirgansiz. O'qituvchi/admin amallari uchun hisob almashtiring.",
+    courses: "Talaba kurslarni ko'rishi mumkin, lekin kurs yarata olmaydi.",
+    learning: "Modul yoki darslarni ko'rish uchun avval kursga yozilish kerak.",
+    assignments: "Talaba o'z vazifalarini topshirishi va ko'rishi mumkin.",
+    results: "Talaba faqat o'z natijalarini yuklay oladi.",
+    users: "Faqat admin foydalanuvchilarni yuklay oladi."
   },
   GUEST: {
-    dashboard: 'Login first. Use Auth page and choose the role needed for your test.',
-    auth: 'Login or register. Teacher creates content, Student enrolls/submits, Admin manages users.',
-    courses: 'Guests can view public courses only.',
-    learning: 'Login first to use course content.',
-    assignments: 'Login first to use assignments.',
-    results: 'Login first to see results.',
-    users: 'Login as admin to load users.'
+    dashboard: "Avval tizimga kiring. Auth sahifasiga o'ting va kerakli rolni tanlang.",
+    auth: "Kiring yoki ro'yxatdan o'ting. O'qituvchi kontent yaratadi, talaba yoziladi/topshiradi, admin foydalanuvchilarni boshqaradi.",
+    courses: "Mehmonlar faqat ochiq kurslarni ko'rishi mumkin.",
+    learning: "Kurs kontentidan foydalanish uchun avval tizimga kiring.",
+    assignments: "Vazifalardan foydalanish uchun avval tizimga kiring.",
+    results: "Natijalarni ko'rish uchun avval tizimga kiring.",
+    users: "Foydalanuvchilarni ko'rish uchun admin sifatida kiring."
   }
 };
 
@@ -63,7 +63,7 @@ function setSession(payload) {
 }
 
 function renderUser() {
-  $('#userBadge').textContent = state.user ? `${state.user.name} · ${state.user.role}` : 'Guest';
+  $('#userBadge').textContent = state.user ? `${state.user.name} · ${state.user.role}` : 'Mehmon';
   renderRoleHelp();
 }
 
@@ -80,12 +80,12 @@ function getActiveView() {
 }
 
 function explainError(error) {
-  const message = error?.message || 'Request failed';
+  const message = error?.message || "So'rov muvaffaqiyatsiz";
   if (message.includes('permission')) {
-    return `${message}. Current role: ${role()}. Go to Auth and login with the correct role.`;
+    return `${message}. Joriy rol: ${role()}. Kirish sahifasiga o'ting va to'g'ri rol bilan kiring.`;
   }
   if (message.includes('Internal server error')) {
-    return 'Internal server error. Check the backend terminal logs; usually database data, table sync, or a wrong ID caused it.';
+    return "Ichki server xatosi. Backend terminal loglarini tekshiring; odatda ma'lumotlar bazasi ma'lumotlari, jadval sinxronlashishi yoki noto'g'ri ID sabab bo'ladi.";
   }
   return message;
 }
@@ -106,7 +106,7 @@ async function api(path, options = {}) {
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok || data.success === false) {
-    const message = data?.error?.message || data?.message || data?.error || 'Request failed';
+    const message = data?.error?.message || data?.message || data?.error || "So'rov muvaffaqiyatsiz";
     throw new Error(Array.isArray(message) ? message.join(', ') : message);
   }
   return data.data ?? data;
@@ -146,7 +146,7 @@ function renderList(target, items, emptyText, type = 'default') {
               <strong>${escapeHtml(title)}</strong>
               ${meta ? `<span class="meta">${escapeHtml(String(meta))}</span>` : ''}
             </div>
-            <p>${escapeHtml(description || 'No description')}</p>
+            <p>${escapeHtml(description || "Tavsif yo'q")}</p>
             ${id ? `<p><span class="id-chip">${escapeHtml(id)}</span></p>` : ''}
           </div>
           <div class="list-actions">${renderActions(item, type)}</div>
@@ -161,20 +161,20 @@ function renderActions(item, type) {
 
   if (type === 'courses') {
     return `
-      <button class="mini-btn" data-action="use-course" data-id="${escapeHtml(id)}" type="button">Use for module</button>
-      <button class="mini-btn" data-action="enroll-course" data-id="${escapeHtml(id)}" type="button">Enroll</button>
+      <button class="mini-btn" data-action="use-course" data-id="${escapeHtml(id)}" type="button">Modul uchun</button>
+      <button class="mini-btn" data-action="enroll-course" data-id="${escapeHtml(id)}" type="button">Yozilish</button>
     `;
   }
 
   if (type === 'learning' && item.courseId) {
     return `
-      <button class="mini-btn" data-action="use-module" data-id="${escapeHtml(id)}" type="button">Use for lesson</button>
-      <button class="mini-btn" data-action="use-assignment-module" data-id="${escapeHtml(id)}" type="button">Use for assignment</button>
+      <button class="mini-btn" data-action="use-module" data-id="${escapeHtml(id)}" type="button">Dars uchun</button>
+      <button class="mini-btn" data-action="use-assignment-module" data-id="${escapeHtml(id)}" type="button">Vazifa uchun</button>
     `;
   }
 
   if (type === 'assignments') {
-    return `<button class="mini-btn" data-action="grade-assignment" data-id="${escapeHtml(id)}" type="button">Grade</button>`;
+    return `<button class="mini-btn" data-action="grade-assignment" data-id="${escapeHtml(id)}" type="button">Baholash</button>`;
   }
 
   return '';
@@ -182,10 +182,10 @@ function renderActions(item, type) {
 
 function scoreText(item) {
   if (item.totalScore !== undefined) {
-    return `Score ${item.totalScore}`;
+    return `Ball ${item.totalScore}`;
   }
   if (item.score !== undefined && item.score !== null) {
-    return `Score ${item.score}`;
+    return `Ball ${item.score}`;
   }
   return '';
 }
@@ -195,7 +195,7 @@ function dateText(item) {
   if (!value) {
     return '';
   }
-  return new Date(value).toLocaleDateString();
+  return new Date(value).toLocaleDateString('uz-UZ');
 }
 
 function escapeHtml(value) {
@@ -251,7 +251,7 @@ async function loadDashboard() {
 async function loadCourses() {
   const result = await api('/courses');
   const courses = [...(result.items || [])].sort((a, b) => a.title.localeCompare(b.title));
-  renderList('#coursesList', courses, 'No courses found', 'courses');
+  renderList('#coursesList', courses, 'Kurs topilmadi', 'courses');
   $('#courseCount').textContent = result.total ?? 0;
 }
 
@@ -297,7 +297,7 @@ function bindForms() {
         body: JSON.stringify(formData(event.currentTarget))
       });
       setSession(payload);
-      showToast('Account created and logged in');
+      showToast('Hisob yaratildi va tizimga kirildi');
       await loadDashboard();
     } catch (error) {
       showToast(explainError(error));
@@ -312,7 +312,7 @@ function bindForms() {
         body: JSON.stringify(formData(event.currentTarget))
       });
       setSession(payload);
-      showToast('Logged in');
+      showToast('Tizimga kirildi');
       await loadDashboard();
     } catch (error) {
       showToast(explainError(error));
@@ -323,26 +323,26 @@ function bindForms() {
     try {
       await api('/auth/logout', { method: 'POST' });
     } catch {
-      // Local session should still be cleared if the server is unavailable.
+      // Server mavjud bo'lmasa ham lokal sessiya tozalanadi.
     }
     state.accessToken = '';
     state.user = null;
     localStorage.removeItem('accessToken');
     localStorage.removeItem('user');
     renderUser();
-    showToast('Logged out');
+    showToast('Tizimdan chiqildi');
   });
 
   $('#courseForm').addEventListener('submit', async (event) => {
     event.preventDefault();
     try {
       if (!['ADMIN', 'TEACHER'].includes(role())) {
-        showToast('Course creation needs TEACHER or ADMIN role. Go to Auth and login with that role.');
+        showToast("Kurs yaratish uchun O'QITUVCHI yoki ADMIN roli kerak. Kirish sahifasiga o'ting.");
         return;
       }
       const payload = numberFields(formData(event.currentTarget), ['price']);
       await api('/courses', { method: 'POST', body: JSON.stringify(payload) });
-      showToast('Course created');
+      showToast('Kurs yaratildi');
       await loadCourses();
     } catch (error) {
       showToast(explainError(error));
@@ -353,14 +353,14 @@ function bindForms() {
     event.preventDefault();
     try {
       if (!['ADMIN', 'TEACHER'].includes(role())) {
-        showToast('Module creation needs TEACHER or ADMIN role.');
+        showToast("Modul yaratish uchun O'QITUVCHI yoki ADMIN roli kerak.");
         return;
       }
       const payload = numberFields(formData(event.currentTarget), ['order']);
       const { courseId, ...body } = payload;
       const created = await api(`/courses/${courseId}/modules`, { method: 'POST', body: JSON.stringify(body) });
-      renderList('#learningList', [created], 'No module created', 'learning');
-      showToast('Module created');
+      renderList('#learningList', [created], 'Modul yaratilmadi', 'learning');
+      showToast('Modul yaratildi');
     } catch (error) {
       showToast(explainError(error));
     }
@@ -370,14 +370,14 @@ function bindForms() {
     event.preventDefault();
     try {
       if (!['ADMIN', 'TEACHER'].includes(role())) {
-        showToast('Lesson creation needs TEACHER or ADMIN role.');
+        showToast("Dars yaratish uchun O'QITUVCHI yoki ADMIN roli kerak.");
         return;
       }
       const payload = numberFields(formData(event.currentTarget), ['order']);
       const { moduleId, ...body } = payload;
       const created = await api(`/modules/${moduleId}/lessons`, { method: 'POST', body: JSON.stringify(body) });
-      renderList('#learningList', [created], 'No lesson created', 'learning');
-      showToast('Lesson created');
+      renderList('#learningList', [created], 'Dars yaratilmadi', 'learning');
+      showToast('Dars yaratildi');
     } catch (error) {
       showToast(explainError(error));
     }
@@ -387,15 +387,15 @@ function bindForms() {
     event.preventDefault();
     try {
       if (role() !== 'STUDENT') {
-        showToast('Enrollment needs STUDENT role. Go to Auth and login as student.');
+        showToast("Yozilish uchun TALABA roli kerak. Kirish sahifasiga o'ting.");
         return;
       }
       const { courseId } = formData(event.currentTarget);
       await api(`/courses/${courseId}/enroll`, { method: 'POST' });
       const myCourses = await api('/my-courses');
       $('#myCourseCount').textContent = myCourses.length;
-      renderList('#learningList', myCourses, 'No enrolled courses');
-      showToast('Enrolled successfully');
+      renderList('#learningList', myCourses, "Yozilgan kurslar yo'q");
+      showToast('Muvaffaqiyatli yozildingiz');
     } catch (error) {
       showToast(explainError(error));
     }
@@ -406,7 +406,7 @@ function bindForms() {
     try {
       const { moduleId } = formData(event.currentTarget);
       const lessons = await api(`/modules/${moduleId}/lessons`);
-      renderList('#learningList', lessons, 'No lessons found', 'learning');
+      renderList('#learningList', lessons, 'Darslar topilmadi', 'learning');
     } catch (error) {
       showToast(explainError(error));
     }
@@ -416,13 +416,13 @@ function bindForms() {
     event.preventDefault();
     try {
       if (role() !== 'STUDENT') {
-        showToast('Submitting assignments needs STUDENT role.');
+        showToast('Vazifa topshirish uchun TALABA roli kerak.');
         return;
       }
       const { moduleId, ...body } = formData(event.currentTarget);
       const created = await api(`/modules/${moduleId}/assignments`, { method: 'POST', body: JSON.stringify(body) });
-      renderList('#assignmentsList', [created], 'No assignment submitted', 'assignments');
-      showToast('Assignment submitted');
+      renderList('#assignmentsList', [created], 'Vazifa topshirilmadi', 'assignments');
+      showToast('Vazifa topshirildi');
     } catch (error) {
       showToast(explainError(error));
     }
@@ -432,14 +432,14 @@ function bindForms() {
     event.preventDefault();
     try {
       if (!['ADMIN', 'TEACHER'].includes(role())) {
-        showToast('Grading assignments needs TEACHER or ADMIN role.');
+        showToast("Baholash uchun O'QITUVCHI yoki ADMIN roli kerak.");
         return;
       }
       const payload = numberFields(formData(event.currentTarget), ['score']);
       const { assignmentId, ...body } = payload;
       const graded = await api(`/assignments/${assignmentId}/grade`, { method: 'PATCH', body: JSON.stringify(body) });
-      renderList('#assignmentsList', [graded], 'No assignment graded', 'assignments');
-      showToast('Assignment graded');
+      renderList('#assignmentsList', [graded], 'Baholanmagan vazifa', 'assignments');
+      showToast('Vazifa baholandi');
     } catch (error) {
       showToast(explainError(error));
     }
@@ -448,52 +448,56 @@ function bindForms() {
 
 function bindButtons() {
   $('#loadCoursesBtn').addEventListener('click', () => loadCourses().catch((error) => showToast(explainError(error))));
+
   $('#loadAssignmentsBtn').addEventListener('click', async () => {
     try {
       if (role() !== 'STUDENT') {
-        showToast('My assignments works only for STUDENT role.');
+        showToast("Mening vazifalarim faqat TALABA roli uchun ishlaydi.");
         return;
       }
       const assignments = await api('/assignments/my');
       $('#assignmentCount').textContent = assignments.length;
-      renderList('#assignmentsList', assignments, 'No assignments found', 'assignments');
+      renderList('#assignmentsList', assignments, 'Vazifalar topilmadi', 'assignments');
     } catch (error) {
       showToast(explainError(error));
     }
   });
+
   $('#loadMyResultsBtn').addEventListener('click', async () => {
     try {
       if (role() !== 'STUDENT') {
-        showToast('My results works only for STUDENT role. Teacher/Admin should use All results.');
+        showToast("Mening natijalarim faqat TALABA roli uchun. O'qituvchi/Admin barcha natijalardan foydalaning.");
         return;
       }
       const results = await api('/results/me');
       $('#resultCount').textContent = results.length;
-      renderList('#resultsList', results, 'No results found');
+      renderList('#resultsList', results, 'Natijalar topilmadi');
     } catch (error) {
       showToast(explainError(error));
     }
   });
+
   $('#loadAllResultsBtn').addEventListener('click', async () => {
     try {
       if (!['ADMIN', 'TEACHER'].includes(role())) {
-        showToast('All results needs TEACHER or ADMIN role.');
+        showToast("Barcha natijalar uchun O'QITUVCHI yoki ADMIN roli kerak.");
         return;
       }
       const results = await api('/results');
-      renderList('#resultsList', results, 'No results found');
+      renderList('#resultsList', results, 'Natijalar topilmadi');
     } catch (error) {
       showToast(explainError(error));
     }
   });
+
   $('#loadUsersBtn').addEventListener('click', async () => {
     try {
       if (role() !== 'ADMIN') {
-        showToast('Users page needs ADMIN role.');
+        showToast('Foydalanuvchilar sahifasi uchun ADMIN roli kerak.');
         return;
       }
       const users = await api('/users');
-      renderList('#usersList', users, 'No users found');
+      renderList('#usersList', users, 'Foydalanuvchilar topilmadi');
     } catch (error) {
       showToast(explainError(error));
     }
@@ -515,18 +519,18 @@ function bindListActions() {
     if (action === 'use-course') {
       setInput('#moduleForm', 'courseId', id);
       setInput('#enrollForm', 'courseId', id);
-      showToast('Course ID added to learning forms');
+      showToast("Kurs ID o'quv shakllariga qo'shildi");
     }
 
     if (action === 'enroll-course') {
       setInput('#enrollForm', 'courseId', id);
       if (role() !== 'STUDENT') {
-        showToast('Enrollment needs STUDENT role. Go to Auth and login as student.');
+        showToast("Yozilish uchun TALABA roli kerak. Kirish sahifasiga o'ting.");
         return;
       }
       try {
         await api(`/courses/${id}/enroll`, { method: 'POST' });
-        showToast('Enrolled successfully');
+        showToast('Muvaffaqiyatli yozildingiz');
       } catch (error) {
         showToast(explainError(error));
       }
@@ -535,17 +539,17 @@ function bindListActions() {
     if (action === 'use-module') {
       setInput('#lessonForm', 'moduleId', id);
       setInput('#loadLessonsForm', 'moduleId', id);
-      showToast('Module ID added to lesson forms');
+      showToast("Modul ID dars shakllariga qo'shildi");
     }
 
     if (action === 'use-assignment-module') {
       setInput('#assignmentForm', 'moduleId', id);
-      showToast('Module ID added to assignment form');
+      showToast("Modul ID vazifa shakliga qo'shildi");
     }
 
     if (action === 'grade-assignment') {
       setInput('#gradeForm', 'assignmentId', id);
-      showToast('Assignment ID added to grade form');
+      showToast("Vazifa ID baholash shakliga qo'shildi");
     }
   });
 }
