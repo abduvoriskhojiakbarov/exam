@@ -27,6 +27,9 @@ export class Assignment {
   @Column({ type: 'text' })
   answer: string;
 
+  @Column({ type: 'text', nullable: true })
+  videoUrl?: string;
+
   @Column({ nullable: true })
   score?: number;
 

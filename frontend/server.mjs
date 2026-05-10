@@ -1,10 +1,11 @@
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const startingPort = Number(process.env.FRONTEND_PORT || 5173);
 const host = process.env.FRONTEND_HOST || '127.0.0.1';
-const root = new URL('.', import.meta.url).pathname;
+const root = fileURLToPath(new URL('.', import.meta.url));
 
 const contentTypes = {
   '.html': 'text/html; charset=utf-8',

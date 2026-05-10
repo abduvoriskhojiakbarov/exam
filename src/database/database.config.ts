@@ -8,7 +8,7 @@ export const databaseConfig: TypeOrmModuleAsyncOptions = {
     host: configService.get<string>('DB_HOST', 'localhost'),
     port: Number(configService.get<string>('DB_PORT', '5432')),
     username: configService.get<string>('DB_USERNAME', 'postgres'),
-    password: configService.get<string>('DB_PASSWORD', 'postgres'),
+    password: configService.get<string>('DB_PASSWORD', '1234'),
     database: configService.get<string>('DB_DATABASE', 'lms_db'),
     autoLoadEntities: true,
     synchronize: configService.get<string>('DB_SYNCHRONIZE', 'true') === 'true'

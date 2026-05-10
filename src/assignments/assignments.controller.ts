@@ -1,4 +1,7 @@
-import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { extname } from 'path';
+const { diskStorage } = require('multer');
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 import { Roles } from '../common/decorators/roles.decorator';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
@@ -15,7 +18,22 @@ export class AssignmentsController {
 
   @Post('modules/:moduleId/assignments')
   @Roles(UserRole.STUDENT)
-  submit(@Param('moduleId') moduleId: string, @Body() dto: CreateAssignmentDto, @CurrentUser() user: User) {
+  @UseInterceptors(FileInterceptor('video', {
+    storage: diskStorage({
+      destination: './uploads',
+      filename: (req: any, file: any, callback: any) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        callback(null, file.fieldname + '-' + uniqueSuffix + extname(file.originalname));
+      },
+    }),
+  }))
+  submit(
+    @Param('moduleId') moduleId: string,
+    @Body() body: any,
+    @UploadedFile() video: any,
+    @CurrentUser() user: User
+  ) {
+    const dto = { answer: body.answer, videoUrl: video ? `/uploads/${video.filename}` : undefined };
     return this.assignmentsService.submit(moduleId, dto, user);
   }
 

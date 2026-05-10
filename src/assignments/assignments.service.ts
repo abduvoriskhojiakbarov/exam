@@ -18,11 +18,11 @@ export class AssignmentsService {
     @InjectRepository(Result) private readonly resultsRepository: Repository<Result>
   ) {}
 
-  async submit(moduleId: string, dto: CreateAssignmentDto, student: User) {
+  async submit(moduleId: string, dto: CreateAssignmentDto & { videoUrl?: string }, student: User) {
     const module = await this.findModule(moduleId);
     await this.assertEnrolled(student.id, module.courseId);
     return this.assignmentsRepository.save(
-      this.assignmentsRepository.create({ moduleId, studentId: student.id, answer: dto.answer })
+      this.assignmentsRepository.create({ moduleId, studentId: student.id, answer: dto.answer, videoUrl: dto.videoUrl })
     );
   }
 

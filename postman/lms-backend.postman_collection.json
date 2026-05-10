@@ -4,7 +4,7 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:3000/api" },
+    { "key": "baseUrl", "value": "http://localhost:3001/api" },
     { "key": "accessToken", "value": "" },
     { "key": "courseId", "value": "" },
     { "key": "moduleId", "value": "" },
@@ -159,10 +159,23 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
-              { "key": "Content-Type", "value": "application/json" }
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" }
             ],
-            "body": { "mode": "raw", "raw": "{\n  \"answer\": \"My assignment answer\"\n}" },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "answer",
+                  "value": "My assignment answer",
+                  "type": "text"
+                },
+                {
+                  "key": "video",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
             "url": "{{baseUrl}}/modules/{{moduleId}}/assignments"
           }
         },
