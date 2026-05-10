@@ -215,13 +215,14 @@
 
         <section id="assignmentsView" class="view">
           <div class="two-column">
-            <form id="assignmentForm" class="panel">
+            <form id="assignmentForm" class="panel" enctype="multipart/form-data">
               <div class="panel-title">
                 <span class="step" aria-hidden="true">01</span>
                 <h2>Vazifa topshirish</h2>
               </div>
               <label>Modul ID <input name="moduleId" placeholder="Modul UUID" required /></label>
               <label>Javob <textarea name="answer">Mening javobim</textarea></label>
+              <label>Video fayl <input name="video" type="file" accept="video/*" /></label>
               <button class="primary-btn" type="submit">Topshirish</button>
             </form>
 

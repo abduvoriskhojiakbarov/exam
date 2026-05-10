@@ -371,8 +371,10 @@ function bindForms() {
         showToast('Vazifa topshirish uchun TALABA roli kerak.');
         return;
       }
-      const { moduleId, ...body } = formData(event.currentTarget);
-      const created = await api(`/modules/${moduleId}/assignments`, { method: 'POST', body: JSON.stringify(body) });
+      const form = event.currentTarget;
+      const moduleId = form.moduleId.value;
+      const body = new FormData(form);
+      const created = await api(`/modules/${moduleId}/assignments`, { method: 'POST', body });
       renderList('#assignmentsList', [created], 'Vazifa topshirilmadi', 'assignments');
       showToast('Vazifa topshirildi');
     } catch (error) {
