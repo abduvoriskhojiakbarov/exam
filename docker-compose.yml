@@ -36,16 +36,5 @@ services:
       postgres:
         condition: service_healthy
 
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile.frontend
-    container_name: lms-frontend
-    restart: unless-stopped
-    ports:
-      - "5175:5173"
-    depends_on:
-      - app
-
 volumes:
   postgres_data:
